@@ -1,0 +1,41 @@
+cmake_minimum_required(VERSION 3.5)
+project(simple_ros_comm)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  cmake_modules
+  roslaunch
+  roslib
+  )
+
+find_package(Boost REQUIRED COMPONENTS system)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
+
+roslaunch_add_file_check(launch)
+
+catkin_package(
+  INCLUDE_DIRS include/simple_ros_comm include 
+  LIBRARIES simple_ros_comm
+  CATKIN_DEPENDS roscpp
+  DEPENDS YAML_CPP
+  )
+
+add_library(${PROJECT_NAME} 
+  # src/lib/
+  )
+
+target_include_directories(${PROJECT_NAME} PUBLIC 
+  include/simple_ros_comm
+  ${catkin_INCLUDE_DIRS} 
+  ${YAML_CPP_INCLUDEDIR} 
+  ${Boost_INCLUDE_DIRS}
+  )
+
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} yaml-cpp)
+
+# add_executable(broadcaster_cal_data_node src/scripts/broadcaster_cal_data.cpp)
+
+# target_link_libraries(broadcaster_cal_data_node ${PROJECT_NAME})
+
