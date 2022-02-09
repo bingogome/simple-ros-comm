@@ -1,3 +1,0 @@
-CONNECT: 1 # ROS1 connection flag
-PORT_OUT: 8532 # Port number for data stream out from ROS
-PORT_IN: 8537 # Port number for data stream into ROS

@@ -1,15 +1,8 @@
 #pragma once
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
-#include <ros/ros.h>
-#include <std_msgs/String.h>
-
-#include <string>
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
-
-using boost::asio::ip::udp;
-
-struct ROSSideInConfig
+struct ROS2SideInConfig
 {
 	int port_in;
 	std::string end_msg;
@@ -18,24 +11,31 @@ struct ROSSideInConfig
 	int msg_size;
 };
 
-class ROSSideIn
+class MinimalPublisher : public rclcpp::Node
+{
+
+public:
+	MinimalPublisher();
+
+private:
+	// ros related members
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+	std_msgs::String msg_test_;
+	std::string sscmd_str_; // command header of current messege
+	std::string ss_str_; // whole msg
+};
+
+class ROS2SideIn
 {
 
 public: 
-	// constructor and start receiving
-	ROSSideIn(ros::NodeHandle& n, boost::asio::io_context& io_context, struct ROSSideInConfig cfg);
+	ROS2SideIn(boost::asio::io_context& io_context, struct ROSSideInConfig cfg);
 
 private:
-
 	void StartReceive();
 	void EndServerClean();
 	void HandleReceive(const boost::system::error_code& error, std::size_t /*bytes_transferred*/);
 	void HandleIncoming();
-
-	// ros related members
-	ros::NodeHandle& n_;
-	ros::Publisher pub_test_; // can be action, service. Use topic as a demo
-	std_msgs::String msg_test_;
 
 	// asio related members
 	udp::socket socket_;
@@ -45,8 +45,6 @@ private:
 	// TODO: make TCP optional
 
 	struct ROSSideInConfig cfg_;
-	std::string sscmd_str_; // command header of current messege
-	std::string ss_str_; // whole msg
-
-
+	MinimalPublisher pub_;
+	
 };

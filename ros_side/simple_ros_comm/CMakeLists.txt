@@ -13,7 +13,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
 
-roslaunch_add_file_check(launch)
+# roslaunch_add_file_check(launch)
 
 catkin_package(
   INCLUDE_DIRS include/simple_ros_comm include 
@@ -23,7 +23,7 @@ catkin_package(
   )
 
 add_library(${PROJECT_NAME} 
-  # src/lib/
+  src/lib/ros_side_in.cpp
   )
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
@@ -35,7 +35,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} yaml-cpp)
 
-# add_executable(broadcaster_cal_data_node src/scripts/broadcaster_cal_data.cpp)
+add_executable(node_ros_side_in src/nodes/node_ros_side_in.cpp)
 
-# target_link_libraries(broadcaster_cal_data_node ${PROJECT_NAME})
+target_link_libraries(node_ros_side_in ${PROJECT_NAME})
 
