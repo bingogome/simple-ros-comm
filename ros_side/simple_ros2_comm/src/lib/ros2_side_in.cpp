@@ -17,28 +17,33 @@ MinimalPublisher::MinimalPublisher(struct ROS2SideInConfig cfg)
 	publisher_ = node_->create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
 }
 
+void MinimalPublisher::SpinROS()
+{
+	rclcpp::spin(node_);
+}
+
 void MinimalPublisher::RunThread()
 {
-	std::thread lets_run_it(rclcpp::spin, node_);
+	std::thread lets_run_it(MinimalPublisher::SpinROS);
 	lets_run_it.detach();
 }
 
 void MinimalPublisher::PublishThis(std_msgs::msg::String msg_test)
 {
-	node.publisher_->publish(msg_test);
+	publisher_->publish(msg_test);
 }
 
 rclcpp::Logger MinimalPublisher::GetLogger()
 {
-	return node_->get_logger();
+	return node_.get_logger();
 }
 
 ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context, 
 	struct ROS2SideInConfig cfg) :
 	cfg_(cfg),
+	pub_(cfg),
 	socket_(io_context, udp::endpoint(udp::v4(), cfg.port_in))
 {
-	pub_(cfg_);
 	pub_.RunThread();
 	if (cfg_.verbose == 1)
 		RCLCPP_INFO(pub_.GetLogger(), "Publisher spinning");
@@ -53,7 +58,7 @@ void ROS2SideIn::StartReceive()
 		boost::asio::buffer(recv_buffer_), 
 		remote_endpoint_,
 		boost::bind(
-			&ROSSideIn::HandleReceive, this,
+			&ROS2SideIn::HandleReceive, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred
 		)

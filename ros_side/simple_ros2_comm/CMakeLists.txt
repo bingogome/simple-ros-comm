@@ -14,26 +14,23 @@ find_package(yaml-cpp REQUIRED)
 include_directories(
   include
   include/simple_ros2_comm
-  ${YAML_CPP_INCLUDEDIR}
+  ${rclcpp_INCLUDE_DIRS}
 )
-
 add_library(${PROJECT_NAME} 
   src/lib/ros2_side_in.cpp
   )
-
 add_executable(node_ros2_side_in src/nodes/node_ros2_side_in.cpp)
+target_include_directories(node_ros2_side_in
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
+    $<INSTALL_INTERFACE:include>
+    )
 ament_target_dependencies(node_ros2_side_in rclcpp std_msgs yaml-cpp)
-target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # uncomment the line when a copyright and license is not present in all source files
-  #set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # uncomment the line when this package is not in a git repo
-  #set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+
+install(TARGETS
+  node_ros2_side_in
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

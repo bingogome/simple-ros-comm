@@ -22,6 +22,7 @@ class MinimalPublisher
 public:
 	MinimalPublisher(struct ROS2SideInConfig cfg);
 	void PublishThis(std_msgs::msg::String msg_test);
+	void SpinROS();
 	void RunThread();
 	rclcpp::Logger GetLogger();
 
