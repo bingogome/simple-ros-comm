@@ -12,22 +12,23 @@ find_package(std_msgs REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
 include_directories(
-  include
   include/simple_ros2_comm
   ${rclcpp_INCLUDE_DIRS}
 )
+
 add_library(${PROJECT_NAME} 
   src/lib/ros2_side_in.cpp
-  )
+)
+  
 add_executable(node_ros2_side_in src/nodes/node_ros2_side_in.cpp)
+
 target_include_directories(node_ros2_side_in
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
     $<INSTALL_INTERFACE:include>
-    )
-ament_target_dependencies(node_ros2_side_in rclcpp std_msgs yaml-cpp)
+)
 
+ament_target_dependencies(node_ros2_side_in rclcpp std_msgs yaml-cpp)
 
 install(TARGETS
   node_ros2_side_in

@@ -14,7 +14,7 @@ using boost::asio::ip::udp;
 MinimalPublisher::MinimalPublisher(struct ROS2SideInConfig cfg) 
 	: cfg_(cfg), node_(cfg_.publisher_name)
 {
-	publisher_ = node_->create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
+	publisher_ = node_.create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
 }
 
 void MinimalPublisher::SpinROS()
@@ -24,7 +24,7 @@ void MinimalPublisher::SpinROS()
 
 void MinimalPublisher::RunThread()
 {
-	std::thread lets_run_it(MinimalPublisher::SpinROS);
+	std::thread lets_run_it(&MinimalPublisher::SpinROS, this);
 	lets_run_it.detach();
 }
 

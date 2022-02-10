@@ -48,17 +48,17 @@ private:
 	void HandleReceive(const boost::system::error_code& error, std::size_t /*bytes_transferred*/);
 	void HandleIncoming();
 
-	// asio related members
 	std_msgs::msg::String msg_test_;
 	std::string sscmd_str_; // command header of current messege
 	std::string ss_str_; // the whole msg
+	struct ROS2SideInConfig cfg_;
+	MinimalPublisher pub_;
+
+	// asio related members
 	udp::socket socket_;
 	udp::endpoint remote_endpoint_;
 	boost::array<char, 55> recv_buffer_; // TODO: make this configurable 55 chars in an encoded command
 	// TODO: make socket array so that multiple channels are possible (or dynamic expansion)
 	// TODO: make TCP optional
-
-	struct ROS2SideInConfig cfg_;
-	MinimalPublisher pub_;
 	
 };
