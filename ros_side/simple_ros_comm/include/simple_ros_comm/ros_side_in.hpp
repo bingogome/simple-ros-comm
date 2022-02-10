@@ -9,6 +9,8 @@
 
 using boost::asio::ip::udp;
 
+// Configuration parameters struct. Will be initialized by 
+// data from config_ros.yaml
 struct ROSSideInConfig
 {
 	int port_in;
@@ -18,6 +20,8 @@ struct ROSSideInConfig
 	int msg_size;
 };
 
+// Main class of the program. Will be called by the main function and constantly
+// receives messages
 class ROSSideIn
 {
 

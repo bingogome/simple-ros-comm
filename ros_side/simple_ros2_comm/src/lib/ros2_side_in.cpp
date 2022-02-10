@@ -11,33 +11,40 @@
 
 using boost::asio::ip::udp;
 
+// Constructor
 MinimalPublisher::MinimalPublisher(struct ROS2SideInConfig cfg) 
-	: cfg_(cfg), node_(cfg_.publisher_name)
+	: cfg_(cfg)
 {
-	publisher_ = node_.create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
+	node_ = rclcpp::Node::make_shared(cfg_.publisher_name);
+	publisher_ = node_->create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
 }
 
+// The task function to be called by a std::thread that runs separately from main
 void MinimalPublisher::SpinROS()
 {
 	rclcpp::spin(node_);
 }
 
+// The caller function of a std::thread
 void MinimalPublisher::RunThread()
 {
 	std::thread lets_run_it(&MinimalPublisher::SpinROS, this);
 	lets_run_it.detach();
 }
 
+// Publish a msg
 void MinimalPublisher::PublishThis(std_msgs::msg::String msg_test)
 {
 	publisher_->publish(msg_test);
 }
 
+// Used by RCLCPP_INFO (ROS2 equivalent of ROS_INFO, a print function)
 rclcpp::Logger MinimalPublisher::GetLogger()
 {
-	return node_.get_logger();
+	return node_->get_logger();
 }
 
+// Constructor
 ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context, 
 	struct ROS2SideInConfig cfg) :
 	cfg_(cfg),

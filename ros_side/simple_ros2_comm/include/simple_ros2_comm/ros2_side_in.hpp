@@ -7,6 +7,8 @@
 
 using boost::asio::ip::udp;
 
+// Configuration parameters struct. Will be initialized by 
+// data from config_ros2.yaml
 struct ROS2SideInConfig
 {
 	int port_in;
@@ -16,6 +18,9 @@ struct ROS2SideInConfig
 	int msg_size;
 };
 
+// A publisher class that contains the reference to a node.
+// Will be used to spin in a separated std::thread from the main
+// thread.
 class MinimalPublisher
 {
 
@@ -31,11 +36,14 @@ private:
 	struct ROS2SideInConfig cfg_;
 
 	// ros related members
-	rclcpp::Node node_;
+	rclcpp::Node::SharedPtr node_;
 	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
 	
 };
 
+// Main class of the program. Will be called by the main function and constantly
+// receives messages
+// Contains a MinimalPublisher object to be spun (ROS spin) in a separate std::thread
 class ROS2SideIn
 {
 
