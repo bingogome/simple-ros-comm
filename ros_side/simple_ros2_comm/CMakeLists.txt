@@ -11,6 +11,20 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
+include_directories(
+  include
+  include/simple_ros2_comm
+  ${YAML_CPP_INCLUDEDIR}
+)
+
+add_library(${PROJECT_NAME} 
+  src/lib/ros2_side_in.cpp
+  )
+
+add_executable(node_ros2_side_in src/nodes/node_ros2_side_in.cpp)
+ament_target_dependencies(node_ros2_side_in rclcpp std_msgs yaml-cpp)
+target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights

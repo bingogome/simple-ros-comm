@@ -1,5 +1,8 @@
 #include <ros2_side_in.hpp>
 
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
+
 #include <string>
 #include <boost/array.hpp>
 #include <boost/bind/bind.hpp>
@@ -8,9 +11,26 @@
 
 using boost::asio::ip::udp;
 
-MinimalPublisher::MinimalPublisher() : 
+MinimalPublisher::MinimalPublisher(struct ROS2SideInConfig cfg) 
+	: cfg_(cfg), node_(cfg_.publisher_name)
 {
+	publisher_ = node_->create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
+}
 
+void MinimalPublisher::RunThread()
+{
+	std::thread lets_run_it(rclcpp::spin, node_);
+	lets_run_it.detach();
+}
+
+void MinimalPublisher::PublishThis(std_msgs::msg::String msg_test)
+{
+	node.publisher_->publish(msg_test);
+}
+
+rclcpp::Logger MinimalPublisher::GetLogger()
+{
+	return node_->get_logger();
 }
 
 ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context, 
@@ -18,14 +38,17 @@ ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context,
 	cfg_(cfg),
 	socket_(io_context, udp::endpoint(udp::v4(), cfg.port_in))
 {
-	publisher_ = this->create_publisher<std_msgs::msg::String>(cfg_.publisher_name, 50);
+	pub_(cfg_);
+	pub_.RunThread();
+	if (cfg_.verbose == 1)
+		RCLCPP_INFO(pub_.GetLogger(), "Publisher spinning");
 	ROS2SideIn::StartReceive();
 }
 
 void ROS2SideIn::StartReceive()
 {
 	if (cfg_.verbose == 1)
-		ROS_INFO("Waiting Transmission");
+		RCLCPP_INFO(pub_.GetLogger(), "Waiting Transmission");
 	socket_.async_receive_from(
 		boost::asio::buffer(recv_buffer_), 
 		remote_endpoint_,
@@ -40,7 +63,9 @@ void ROS2SideIn::StartReceive()
 // End port gracefully
 void ROS2SideIn::EndServerClean()
 {
+	RCLCPP_INFO(pub_.GetLogger(), "Error happened, or user interrupted");
 	socket_.close();
+	rclcpp::shutdown();
 }
 
 // Handle asio communication. Start new receive once finished
@@ -58,7 +83,7 @@ void ROS2SideIn::HandleReceive(const boost::system::error_code& error,
 void ROS2SideIn::HandleIncoming()
 {
 	if (cfg_.verbose == 1)
-		RCLCPP_INFO("Handling msg ...");
+		RCLCPP_INFO(pub_.GetLogger(), "Handling msg ...");
 	std::stringstream sscmd;
 	std::stringstream ss;
 	for(int i=0;i<10;i++) // header length is 10
@@ -70,13 +95,13 @@ void ROS2SideIn::HandleIncoming()
 
 	if(sscmd_str_==cfg_.end_msg){
 		if (cfg_.verbose == 1)
-			RCLCPP_INFO("Ending communication node ...");
+			RCLCPP_INFO(pub_.GetLogger(), "Ending communication node ...");
 		ROS2SideIn::EndServerClean();
 		throw;
 	}
 	else{
 		// main msg handling body 
 		msg_test_.data = ss_str_;
-		publisher_->publish(msg_test_);
+		pub_.PublishThis(msg_test_);
 	}
 }
