@@ -4,8 +4,9 @@ PORT_OUT: 8532 # Port number for data stream out from ROS
 PORT_IN: 8537 # Port number for data stream into ROS
 
 MSG_END: "_msg_end__" # communication messege starts with this means end the port
-MSG_SIZE: 55 # change the ros_side_in.hpp {boost::array<char, ...> recv_buffer_} field when chaning this number
+MSG_SIZE: 55 # change the ros_side_in.hpp and ros_side_out.hpp {boost::array<char, ...> recv_buffer_} field when chaning this number
 
-PUBLISHER_NAME: "/SimpleRosComm/msg_received" # Messege ROS publisher name 
+PUBLISHER_NAME: "/SimpleRosComm/msg_received" # Messege ROS publisher name (ROSSideIn received)
+SUBSCRIBER_NAME: "/SimpleRosComm/msg_to_send" # Messege ROS subscriber name (ROSSideOut to send)
 
 VERBOSE: 1
