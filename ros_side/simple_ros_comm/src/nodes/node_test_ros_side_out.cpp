@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 		s = "_msg_test_12345678901234567890123456789012345678901234\n";
 		std_msgs::String msg;
 		msg.data = s;
-		ROS_INFO("Sent");
+		ROS_INFO("ROS prepared some data to send");
 		chatter_pub.publish(msg);
 		ros::spinOnce();
 		loop_rate.sleep();
