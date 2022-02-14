@@ -24,6 +24,7 @@ catkin_package(
 
 add_library(${PROJECT_NAME} 
   src/lib/ros_side_in.cpp
+  src/lib/ros_side_out.cpp
   )
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
@@ -36,6 +37,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} yaml-cpp)
 
 add_executable(node_ros_side_in src/nodes/node_ros_side_in.cpp)
-
 target_link_libraries(node_ros_side_in ${PROJECT_NAME})
 
+add_executable(node_ros_side_out src/nodes/node_ros_side_out.cpp)
+target_link_libraries(node_ros_side_out ${PROJECT_NAME})
+
+add_executable(node_test_ros_side_out src/nodes/node_test_ros_side_out.cpp)
+target_link_libraries(node_test_ros_side_out ${PROJECT_NAME})
