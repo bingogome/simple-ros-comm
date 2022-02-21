@@ -8,11 +8,12 @@ It allows the user to create customized "data protocol" by editing how the trans
 ## Dependencies
 - ROS/ROS2. The package can be used in ROS or ROS2 alone, or together.
 	- ROS. The package is tested on Ubuntu 20.04 with ROS noetic, but should be able to run on any typical version. Send a request to the developer if it does not work on your verson of ROS.
-	- ROS2. The package is (TODO)
-- Boost.asio. Boost is supported by ROS, so no external installation is needed.
+	- ROS2. The package is tested on Ubuntu 20.04 with ROS galactic, but should be able to run on any typical version. Send a request to the developer if it does not work on your verson of ROS.
+- Boost.asio. Boost is supported by ROS and ROS2, so no external installation is needed.
 
 ## Instruction
-### ROS1
+
+### ROS1 - Send some data into ROS1
 - Clone the repository to a directory. The cloned directory is *DIR_UPPER/simple-ros-comm*.
 - Create a symbolic link (similar to shortcut as in Windows) to your ROS workspace *DIR_WS/src* folder. (Or simply copy it to there if you don't need to edit the code).
 ```
@@ -37,7 +38,33 @@ rosrun simple_ros_comm node_ros_side_in # the node to send encoded command to RO
 ```
 - **Remember to close the port by sending the port an ending message. See *config_ros.yaml.***
 - Change the port, ending message, and more in configuration file *config_ros.yaml* as needed.
-### ROS2
+
+### ROS2 - Send some data into ROS2
+- Clone the repository to a directory. The cloned directory is *DIR_UPPER/simple-ros-comm*.
+- Create a symbolic link (similar to shortcut as in Windows) to your ROS workspace *DIR_WS/src* folder. (Or simply copy it to there if you don't need to edit the code).
+```
+cd DIR_WS/src
+ln -s DIR_UPPER/simple-ros-comm/ros_side/simple_ros2_comm DIR_WS/src/simple_ros2_comm
+```
+- Build the package
+```
+cd DIR_WS
+source /opt/ros/galactic/setup.bash
+colcon build
+```
+- Start talking
+```
+cd DIR_WS
+source /opt/ros/galactic/setup.bash
+source DIR_WS/install/setup.bash
+ros2 run simple_ros2_comm node_ros2_side_in # the node to send encoded command to ROS2
+
+```
+- **Remember to close the port by sending the port an ending message. See *config_ros2.yaml.***
+- Change the port, ending message, and more in configuration file *config_ros2.yaml* as needed.
+
+### A demo showing ROSIn and ROS2In working together
+https://github.com/bingogome/documents/blob/main/simple-ros-comm/ros_n_ros2in-matlab-demo.mkv
 
 ## Customizability
 You can customize your own communication protocol. Just go ahead and modify the way how the messege is handled. See ROSSideIn::HandleIncoming()

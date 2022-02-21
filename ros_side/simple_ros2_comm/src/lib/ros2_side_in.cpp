@@ -45,8 +45,7 @@ rclcpp::Logger MinimalPublisher::GetLogger()
 }
 
 // Constructor
-ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context, 
-	struct ROS2SideInConfig cfg) :
+ROS2SideIn::ROS2SideIn(boost::asio::io_context& io_context, struct ROS2SideInConfig cfg) :
 	cfg_(cfg),
 	pub_(cfg),
 	socket_(io_context, udp::endpoint(udp::v4(), cfg.port_in))
