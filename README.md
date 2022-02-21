@@ -33,7 +33,9 @@ roscore
 cd DIR_WS
 source /opt/ros/noetic/setup.bash
 source DIR_WS/devel/setup.bash
-rosrun simple_ros_comm node_ros_side_in # the node to send encoded command to ROS
+rosrun simple_ros_comm node_ros_side_in # the node to receive encoded command in ROS
+# You should have a separate program that sends encoded command to a port (specified by config_ros.yaml)
+# Use rostopic echo /SimpleRosComm/msg_received on ROS side to test if the msg is received
 
 ```
 - **Remember to close the port by sending the port an ending message. See *config_ros.yaml.***
@@ -62,7 +64,9 @@ colcon build
 cd DIR_WS
 source /opt/ros/galactic/setup.bash
 source DIR_WS/install/setup.bash
-ros2 run simple_ros2_comm node_ros2_side_in # the node to send encoded command to ROS2
+ros2 run simple_ros2_comm node_ros2_side_in # the node to receive encoded command in ROS2
+# You should have a separate program that sends encoded command to a port (specified by config_ros2.yaml)
+# Use rostopic echo /SimpleRos2Comm_msg_received on ROS2 side to test if the msg is received
 
 ```
 - **Remember to close the port by sending the port an ending message. See *config_ros2.yaml.***
