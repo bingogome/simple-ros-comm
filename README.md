@@ -39,6 +39,11 @@ rosrun simple_ros_comm node_ros_side_in # the node to send encoded command to RO
 - **Remember to close the port by sending the port an ending message. See *config_ros.yaml.***
 - Change the port, ending message, and more in configuration file *config_ros.yaml* as needed.
 
+### ROS1 - Send some data from ROS1
+- Build the package as described in ROS1 - Send some data into ROS1.
+- Run node_ros_side_out node
+- Create a node (or simply use your own node) that publishes data into /SimpleRosComm/msg_to_send. An example is in ros_side/simple_ros_comm/src/nodes/node_test_ros_side_out.cpp
+
 ### ROS2 - Send some data into ROS2
 - Clone the repository to a directory. The cloned directory is *DIR_UPPER/simple-ros-comm*.
 - Create a symbolic link (similar to shortcut as in Windows) to your ROS workspace *DIR_WS/src* folder. (Or simply copy it to there if you don't need to edit the code).
@@ -65,6 +70,9 @@ ros2 run simple_ros2_comm node_ros2_side_in # the node to send encoded command t
 
 ### A demo showing ROSIn and ROS2In working together
 https://github.com/bingogome/documents/blob/main/simple-ros-comm/ros_n_ros2in-matlab-demo.mkv
+
+### All other demo
+https://github.com/bingogome/documents/tree/main/simple-ros-comm
 
 ## Customizability
 You can customize your own communication protocol. Just go ahead and modify the way how the messege is handled. See ROSSideIn::HandleIncoming()
