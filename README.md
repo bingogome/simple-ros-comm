@@ -5,6 +5,8 @@
 **simple-ros-comm** is a package developed for the users who need a easy and flexible communication method from a hardware (or software) interface to ROS and/or ROS2. The package is developed using C++ on the ROS/ROS2 side, and is language invariant on the machine side (the side that you want ROS/ROS2 talks to). 
 It allows the user to create customized "data protocol" by editing how the transmitted string is encoded. It does not support data type except for string at the moment.
 
+You might be also interested in checking out **simple-slicer-comm** in here: https://github.com/bingogome/simple-slicer-comm
+
 ## Dependencies
 - ROS/ROS2. The package can be used in ROS or ROS2 alone, or together.
 	- ROS. The package is tested on Ubuntu 20.04 with ROS noetic, but should be able to run on any typical version. Send a request to the developer if it does not work on your verson of ROS.
