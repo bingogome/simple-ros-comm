@@ -7,6 +7,22 @@ It allows the user to create customized "data protocol" by editing how the trans
 
 You might be also interested in checking out **simple-slicer-comm** in here: https://github.com/bingogome/simple-slicer-comm
 
+## Citation
+
+Please consider to cite the following paper in which this module was first used in published work.
+
+@inproceedings{liu2022inside,
+  title={Inside-out tracking and projection mapping for robot-assisted transcranial magnetic stimulation},
+  author={Liu, Yihao and Liu, Shuya Joshua and Sefati, Shahriar and Jing, Tian and Kheradmand, Amir and Armand, Mehran},
+  booktitle={Optical Architectures for Displays and Sensing in Augmented, Virtual, and Mixed Reality (AR, VR, MR) III},
+  volume={11931},
+  pages={57--70},
+  year={2022},
+  organization={SPIE}
+}
+
+Liu, Y., Liu, S. J., Sefati, S., Jing, T., Kheradmand, A., & Armand, M. (2022, March). Inside-out tracking and projection mapping for robot-assisted transcranial magnetic stimulation. In Optical Architectures for Displays and Sensing in Augmented, Virtual, and Mixed Reality (AR, VR, MR) III (Vol. 11931, pp. 57-70). SPIE.
+
 ## Dependencies
 - ROS/ROS2. The package can be used in ROS or ROS2 alone, or together.
 	- ROS. The package is tested on Ubuntu 20.04 with ROS noetic, but should be able to run on any typical version. Send a request to the developer if it does not work on your verson of ROS.
